@@ -18,8 +18,6 @@ ignore = ["E:/Code/Agent-Skills/wip"]
 
 ```text
 gitcode/     GitCode 检视、合入回顾
-cann/        CANN 日志定位 / 收集 / 评测
-msprof/      msprof 诊断
 wip/         草稿（config ignore，不进自动触发）
 ```
 
