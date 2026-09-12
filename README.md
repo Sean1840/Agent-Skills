@@ -54,9 +54,14 @@ Grok 支持递归扫描本仓，所以用户级不扁平复制，避免和 `gitc
 
 ```text
 gitcode/     GitCode 检视、合入回顾
+cann/        Profiling / plog 分析（pipeline + parse + collect + 工具脚本）
 wip/         草稿，不安装
 install.py   跨 Agent 安装
 ```
+
+### cann（Profiling）
+
+入口 skill：`cann-prof-pipeline`。脚本在 `cann/tool/`（`python -m cann_analyze`）。说明见 [cann/README.md](cann/README.md)。
 
 每个 skill：
 

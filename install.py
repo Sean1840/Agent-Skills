@@ -211,7 +211,31 @@ def parse_agents(raw: str | None, detect_default: bool) -> list[str]:
     return found or ["grok"]
 
 
+def copy_file(src: Path, dst: Path) -> str:
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    if dst.exists() and src.stat().st_mtime <= dst.stat().st_mtime and src.stat().st_size == dst.stat().st_size:
+        return "exists"
+    shutil.copy2(src, dst)
+    return "copy"
+
+
+def install_sidecars(skill: Path, dest_root: Path) -> None:
+    """Shared md + docs next to a skill (e.g. cann/analysis-chain.md, cann/docs)."""
+    parent = skill.parent
+    for md in parent.glob("*.md"):
+        if md.name.lower() == "readme.md":
+            continue
+        how = copy_file(md, dest_root / md.name)
+        print(f"  sidecar   {how:8}  {dest_root / md.name}")
+    docs = parent / "docs"
+    if docs.is_dir():
+        dest = dest_root / "docs"
+        how = link_or_copy(docs, dest)
+        print(f"  sidecar   {how:8}  {dest}")
+
+
 def install(skills: list[Path], agents: list[str], scope: str, project: Path, shared: bool) -> None:
+    sidecar_roots: set[Path] = set()
     for skill in skills:
         print(f"skill {skill.name}  ({skill.relative_to(REPO)})")
         for agent in agents:
@@ -224,10 +248,13 @@ def install(skills: list[Path], agents: list[str], scope: str, project: Path, sh
             dest = dest_root / skill.name
             how = link_or_copy(skill, dest)
             print(f"  {agent:8}  {how:8}  {dest}")
+            sidecar_roots.add(dest_root)
+            install_sidecars(skill, dest_root)
         if shared and scope == "user":
             dest = SHARED_USER / skill.name
             how = link_or_copy(skill, dest)
             print(f"  {'shared':8}  {how:8}  {dest}")
+            install_sidecars(skill, SHARED_USER)
 
 
 def uninstall(skills: list[Path], agents: list[str], scope: str, project: Path, shared: bool) -> None:
