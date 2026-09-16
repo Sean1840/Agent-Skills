@@ -8,7 +8,6 @@
 python <this-skill>/scripts/local_config.py show
 python <this-skill>/scripts/local_config.py set gitcode.review_root ~/review
 python <this-skill>/scripts/local_config.py set-clone Ascend/msprof ~/review/msprof
-python <this-skill>/scripts/local_config.py set-cann-repo ascend/msprof /path/to/msprof
 ```
 
 ## 何时问、问什么

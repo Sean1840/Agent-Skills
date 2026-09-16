@@ -136,17 +136,6 @@ def set_summary_output_dir(path: str | Path) -> Path:
     return resolved
 
 
-def set_cann_repo_path(repo_id: str, path: str | Path) -> Path:
-    resolved = Path(path).expanduser().resolve()
-    data = load()
-    cann = data.setdefault("cann", {})
-    mapping = dict(cann.get("repo_paths") or {})
-    mapping[repo_id] = str(resolved)
-    cann["repo_paths"] = mapping
-    save(data)
-    return resolved
-
-
 def missing_for_review(owner: str, repo: str) -> list[str]:
     missing = []
     if get_clone_path(owner, repo) is None:
@@ -187,12 +176,6 @@ def _cmd_set(args: argparse.Namespace) -> int:
     return 0
 
 
-def _cmd_set_cann_repo(args: argparse.Namespace) -> int:
-    set_cann_repo_path(args.repo_id, args.path)
-    print(str(config_path()))
-    return 0
-
-
 def _cmd_set_clone(args: argparse.Namespace) -> int:
     if "/" not in args.repo:
         print("repo must be owner/name", file=sys.stderr)
@@ -215,10 +198,6 @@ def main() -> int:
     p_clone.add_argument("repo", help="owner/name")
     p_clone.add_argument("path")
     p_clone.set_defaults(func=_cmd_set_clone)
-    p_cann = sub.add_parser("set-cann-repo")
-    p_cann.add_argument("repo_id", help="catalog id, e.g. ascend/msprof")
-    p_cann.add_argument("path")
-    p_cann.set_defaults(func=_cmd_set_cann_repo)
     args = parser.parse_args()
     return args.func(args)
 
