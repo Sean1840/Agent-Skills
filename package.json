@@ -1,13 +1,10 @@
 {
   "name": "agent-skills",
   "version": "1.0.0",
-  "description": "Cross-agent skills: GitCode PR review/summary and CANN/msprof profiling analysis",
+  "description": "Cross-agent skills: GitCode PR review and merged-PR retrospectives",
   "keywords": [
     "skills",
     "gitcode",
-    "cann",
-    "msprof",
-    "profiling",
     "claude",
     "codex",
     "grok"
@@ -20,7 +17,6 @@
   "files": [
     "README.md",
     "install.py",
-    "gitcode/",
-    "cann/"
+    "gitcode/"
   ]
 }

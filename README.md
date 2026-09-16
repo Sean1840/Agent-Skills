@@ -12,7 +12,7 @@
 npx skills add Sean1840/Agent-Skills --list
 ```
 
-能列出 8 个 skill（`gitcode-review`、`gitcode-pr-summary`、`cann-prof-pipeline` 等）就可以装。
+能列出 gitcode 相关 skill 就可以装。CANN / msprof 分析已迁到 [CANN-Analyzer](https://github.com/Sean1840/CANN-Analyzer)。
 
 ### 推荐：npx
 
@@ -27,7 +27,6 @@ npx skills add Sean1840/Agent-Skills -g -y -a codex
 
 # 只装某一个
 npx skills add Sean1840/Agent-Skills --skill gitcode-review -a grok -g -y
-npx skills add Sean1840/Agent-Skills --skill cann-prof-pipeline -a claude-code -g -y
 
 # 更新已安装的
 npx skills check
@@ -36,7 +35,7 @@ npx skills update
 
 `-g` 用户级；不加则装到当前项目（`.claude/skills/`、`.agents/skills/` 等）。多个 `--skill` 要分开写，不要逗号拼在一个参数里。
 
-npx 拷贝每个 skill 自己的目录（`SKILL.md` + `scripts/` + `references/`）。cann 的共享文档和 `cann_analyze` 已放进 **`cann-prof-pipeline/references/` 与 `scripts/`**，装 pipeline 就会带上。其它 cann skill 通过 `../cann-prof-pipeline/references/...` 引用，所以 **cann 技能请一起装**（`--all` 或至少带上 `cann-prof-pipeline`）。Grok 也可以继续用 `~/.grok/config.toml` 的 `[skills].paths` 直接扫本仓。
+npx 拷贝每个 skill 自己的目录（`SKILL.md` + `scripts/` + `references/`）。Grok 也可以继续用 `~/.grok/config.toml` 的 `[skills].paths` 直接扫本仓。CANN skills 请装 [CANN-Analyzer](https://github.com/Sean1840/CANN-Analyzer)：`npx skills add Sean1840/CANN-Analyzer -g -y --all`。
 
 ### 本地配置（token / clone 路径）
 
@@ -92,15 +91,12 @@ Grok 支持递归扫描本仓，所以用户级不扁平复制，避免和 `gitc
 
 ```text
 gitcode/     GitCode 检视、合入回顾
-cann/        Profiling / plog 分析（共享文档和工具在 cann-prof-pipeline 内）
 wip/         草稿，不安装
 install.py   跨 Agent 安装（备选）
 package.json npm 元信息（npx skills 主要认 GitHub 上的 SKILL.md）
 ```
 
-### cann（Profiling）
-
-入口 skill：`cann-prof-pipeline`。共享文档在其 `references/`，`cann_analyze` 在其 `scripts/`。说明见 [cann/README.md](cann/README.md)。
+CANN / profiling 在独立仓 [CANN-Analyzer](https://github.com/Sean1840/CANN-Analyzer)。
 
 每个 skill：
 
