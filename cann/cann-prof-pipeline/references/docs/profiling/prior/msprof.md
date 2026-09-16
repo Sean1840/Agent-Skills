@@ -26,3 +26,5 @@ export
 - 原始缺/坏：回 runtime 采集或上报仓，不要改 viewer。
 - id 对不上：先查关联用的任务 id 是否同一套（含 batch），再查采集切片是否缺。
 - torch_npu 的 `ASCEND_PROFILER_OUTPUT` 不在本仓。
+
+交付件：`mindstudio_profiler_output` 的 json/csv，以及 `msprof_{时间戳}.db`（表关联见 [details/msprof-db.md](../details/msprof-db.md)）。Host→Device 连线见 [details/timeline-flow.md](../details/timeline-flow.md)。

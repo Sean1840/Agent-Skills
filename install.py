@@ -220,7 +220,7 @@ def copy_file(src: Path, dst: Path) -> str:
 
 
 def install_sidecars(skill: Path, dest_root: Path) -> None:
-    """Shared md + docs next to a skill (e.g. cann/analysis-chain.md, cann/docs)."""
+    """Leftover sibling md/docs next to a skill. cann shared files now live in cann-prof-pipeline/references and scripts."""
     parent = skill.parent
     for md in parent.glob("*.md"):
         if md.name.lower() == "readme.md":

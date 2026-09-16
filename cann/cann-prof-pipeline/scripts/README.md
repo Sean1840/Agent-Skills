@@ -1,9 +1,9 @@
 # cann_analyze
 
-Profiling / plog 收集、行号索引、pid 对齐。被 `cann-prof-*` 与 `cann-log-*` 调用。
+Profiling / plog 收集、行号索引、pid 对齐。被 `cann-prof-*` 与 `cann-log-*` 调用。npx 安装后本目录在 `cann-prof-pipeline/scripts/`。
 
 ```bash
-set PYTHONPATH=E:\Code\Agent-Skills\cann\tool
+set PYTHONPATH=<cann-prof-pipeline>/scripts
 python -m cann_analyze --help
 ```
 

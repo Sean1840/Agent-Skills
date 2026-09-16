@@ -18,6 +18,6 @@ python -m cann_analyze collect <path>
 python -m cann_analyze evidence <path> -o evidence.json
 ```
 
-解析 **全部级别** 进包。对外列问题仍 ERROR 优先，WARNING/INFO 只跟当前路径。plog 格式见 [log-format.md](../docs/log-format.md)。
+解析 **全部级别** 进包。对外列问题仍 ERROR 优先，WARNING/INFO 只跟当前路径。plog 格式见 [log-format.md](../cann-prof-pipeline/references/docs/log-format.md)。工具在 `cann-prof-pipeline/scripts/`（与 pipeline 一起安装）。
 
 收完若用户要定位 profiling：把 evidence 交给 `cann-prof-pipeline`。只要对某一行代码：`cann-log-locate`。

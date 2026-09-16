@@ -8,11 +8,11 @@ description: >
 
 # Evaluate CANN-Analyze
 
-Rubric (single source): [eval/rubric.md](../eval/rubric.md)
+Rubric (single source): [eval/rubric.md](eval/rubric.md)
 
 ## Run the tool bar
 
-From repo root:
+From this skill directory (needs sibling `cann-prof-pipeline/scripts` on `PYTHONPATH`):
 
 ```text
 python eval/run_eval.py

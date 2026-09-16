@@ -7,7 +7,7 @@
 | **先验** | `prior/` | 数据从哪来、往哪流、责任落在哪仓 | 产品分层变了才改 |
 | **细节** | `details/` | 文件名、函数、芯片宏、bit 切分、表名 | **可能随时变**。结论和日志/中间件对不上时，对照 dump 手动更新（处理方式同基线 sqlite：先用现成记录，对不上再刷新） |
 
-业务 skill：`cann-prof-pipeline`（入口）→ `cann-prof-parse` / `cann-prof-collect`。`cann-log-locate` / `cann-log-triage` 是底座。未到无法定位就沿业务链追数据（[analysis-chain.md](../../analysis-chain.md)）。给改法后查仓是否已合入并对齐用户包版本（[version-and-fix.md](../../version-and-fix.md)）。
+业务 skill：`cann-prof-pipeline`（入口）→ `cann-prof-parse` / `cann-prof-collect`。`cann-log-locate` / `cann-log-triage` 是底座。未到无法定位就沿业务链追数据（[analysis-chain.md](../../analysis-chain.md)）。给改法后查仓是否已合入并对齐用户包版本（[version-and-fix.md](../../version-and-fix.md)）。msprof 统一 DB：[details/msprof-db.md](details/msprof-db.md)。timeline 连线：[details/timeline-flow.md](details/timeline-flow.md)。
 
 分析时：
 

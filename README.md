@@ -36,7 +36,7 @@ npx skills update
 
 `-g` 用户级；不加则装到当前项目（`.claude/skills/`、`.agents/skills/` 等）。多个 `--skill` 要分开写，不要逗号拼在一个参数里。
 
-npx 只拷贝每个 skill 自己的目录（`SKILL.md` + `scripts/` + `references/`）。`cann/` 下的共享文档和 `tool/` 分析脚本**不会**随 npx 进去。需要完整 cann 分析链（`analysis-chain.md`、`docs/`、`python -m cann_analyze`）时：clone 本仓，或用下面的 `install.py`（会带 sidecar）。Grok 也可以继续用 `~/.grok/config.toml` 的 `[skills].paths` 直接扫本仓。
+npx 拷贝每个 skill 自己的目录（`SKILL.md` + `scripts/` + `references/`）。cann 的共享文档和 `cann_analyze` 已放进 **`cann-prof-pipeline/references/` 与 `scripts/`**，装 pipeline 就会带上。其它 cann skill 通过 `../cann-prof-pipeline/references/...` 引用，所以 **cann 技能请一起装**（`--all` 或至少带上 `cann-prof-pipeline`）。Grok 也可以继续用 `~/.grok/config.toml` 的 `[skills].paths` 直接扫本仓。
 
 ### 备选：仓内 install.py
 
@@ -88,14 +88,15 @@ Grok 支持递归扫描本仓，所以用户级不扁平复制，避免和 `gitc
 
 ```text
 gitcode/     GitCode 检视、合入回顾
-cann/        Profiling / plog 分析（pipeline + parse + collect + 工具脚本）
+cann/        Profiling / plog 分析（共享文档和工具在 cann-prof-pipeline 内）
 wip/         草稿，不安装
-install.py   跨 Agent 安装
+install.py   跨 Agent 安装（备选）
+package.json npm 元信息（npx skills 主要认 GitHub 上的 SKILL.md）
 ```
 
 ### cann（Profiling）
 
-入口 skill：`cann-prof-pipeline`。脚本在 `cann/tool/`（`python -m cann_analyze`）。说明见 [cann/README.md](cann/README.md)。
+入口 skill：`cann-prof-pipeline`。共享文档在其 `references/`，`cann_analyze` 在其 `scripts/`。说明见 [cann/README.md](cann/README.md)。
 
 每个 skill：
 

@@ -11,9 +11,9 @@ description: >
 
 # 解析定位
 
-只在链路判定=解析，或用户已确认是解析产物问题时进入。先验：[msprof](../docs/profiling/prior/msprof.md)、[pytorch](../docs/profiling/prior/pytorch.md)。
+只在链路判定=解析，或用户已确认是解析产物问题时进入。先验：[msprof](../cann-prof-pipeline/references/docs/profiling/prior/msprof.md)、[pytorch](../cann-prof-pipeline/references/docs/profiling/prior/pytorch.md)。表关联：[msprof-db.md](../cann-prof-pipeline/references/docs/profiling/details/msprof-db.md)；timeline 连线：[timeline-flow.md](../cann-prof-pipeline/references/docs/profiling/details/timeline-flow.md)。
 
-解析报错后必须按 [analysis-chain.md](../analysis-chain.md) 继续：有没有对应原始/中间数据，能不能把报错那一条捞出来（db、切片、临时解析），再判断上报/采集/解析。不要停在日志字面。
+解析报错后必须按 [analysis-chain.md](../cann-prof-pipeline/references/analysis-chain.md) 继续：有没有对应原始/中间数据，能不能把报错那一条捞出来（db、切片、临时解析），再判断上报/采集/解析。不要停在日志字面。需要和 `cann-prof-pipeline` 一起安装（npx 后共享文档在 pipeline 的 `references/`）。
 
 ## 跳转
 
@@ -21,8 +21,8 @@ description: >
 - 捞出的内容说明是上报漏了（如 type 未注册）→ **回 `cann-prof-pipeline`（上报）**
 - 单行对代码 → `cann-log-locate`；尚未分流 → **`cann-prof-pipeline`**
 
-PROF 内 → msprof；`ASCEND_PROFILER_OUTPUT` / Parser.log → pytorch。细节对不上改 `details/`。可改代码时 [version-and-fix.md](../version-and-fix.md)。
+PROF 内 → msprof；`ASCEND_PROFILER_OUTPUT` / Parser.log → pytorch。细节对不上改 `details/`。可改代码时 [version-and-fix.md](../cann-prof-pipeline/references/version-and-fix.md)。
 
 ## 输出
 
-[report-template.md](../report-template.md)。
+[report-template.md](../cann-prof-pipeline/references/report-template.md)。

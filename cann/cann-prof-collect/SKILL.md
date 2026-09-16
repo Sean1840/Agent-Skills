@@ -11,9 +11,9 @@ description: >
 
 # 采集定位
 
-只在链路判定=采集或原始落盘不完整时进入。先验：[runtime](../docs/profiling/prior/runtime.md)、[driver](../docs/profiling/prior/driver.md)。
+只在链路判定=采集或原始落盘不完整时进入。先验：[runtime](../cann-prof-pipeline/references/docs/profiling/prior/runtime.md)、[driver](../cann-prof-pipeline/references/docs/profiling/prior/driver.md)。需要和 `cann-prof-pipeline` 一起安装。
 
-缺文件或落盘异常时按 [analysis-chain.md](../analysis-chain.md) 打开切片/看条数，不要只报文件名缺失。
+缺文件或落盘异常时按 [analysis-chain.md](../cann-prof-pipeline/references/analysis-chain.md) 打开切片/看条数，不要只报文件名缺失。
 
 ## 跳转
 
@@ -23,8 +23,8 @@ description: >
 
 AICPU 自搬 vs 驱动通道见 `details/driver.md`（宏变了改 details）。
 
-能给出代码改法时走 [version-and-fix.md](../version-and-fix.md)。
+能给出代码改法时走 [version-and-fix.md](../cann-prof-pipeline/references/version-and-fix.md)。
 
 ## 输出
 
-[report-template.md](../report-template.md)。无 plog 也可根据目录给初步采集结论，并要补日志。
+[report-template.md](../cann-prof-pipeline/references/report-template.md)。无 plog 也可根据目录给初步采集结论，并要补日志。

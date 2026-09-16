@@ -4,8 +4,9 @@ import json
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "tools"))
+SKILL = Path(__file__).resolve().parents[1]
+ROOT = SKILL
+sys.path.insert(0, str(SKILL.parent / "cann-prof-pipeline" / "scripts"))
 
 from cann_analyze.index_cmd import index_repo  # noqa: E402
 from cann_analyze.locate import locate_path  # noqa: E402

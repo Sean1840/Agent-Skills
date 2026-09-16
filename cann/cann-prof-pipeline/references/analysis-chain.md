@@ -26,4 +26,4 @@
 
 找到可改点之后走 [version-and-fix.md](version-and-fix.md)。
 
-范例（解析报缺 type → 从 dic+ApiData 捞到 Runtime Memset）：[type-1071-memset.md](cann-prof-pipeline/references/cases/type-1071-memset.md)。
+范例（解析报缺 type → 从 dic+ApiData 捞到 Runtime Memset）：[type-1071-memset.md](cases/type-1071-memset.md)。

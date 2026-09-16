@@ -30,3 +30,8 @@ V6:    batch = 0，task 32 位
 - 混跑时中间仍是 sqlite；全 C 规划改内存
 
 **样本 device_0/data：** `stars_soc.data`、`ts_track.data`（随开关变）。
+
+**统一 DB 与 timeline 连线**
+
+- 表字段和关联：[msprof-db.md](msprof-db.md)（`CANN_API.connectionId` ↔ `TASK` / `COMMUNICATION_OP`）
+- chrome://tracing flow 与 HostToDevice / torch_to_npu：[timeline-flow.md](timeline-flow.md)

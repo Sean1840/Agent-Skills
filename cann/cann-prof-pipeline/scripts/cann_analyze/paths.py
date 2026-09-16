@@ -10,10 +10,10 @@ def project_root() -> Path:
     if env:
         return Path(env).expanduser().resolve()
     here = Path(__file__).resolve()
-    for candidate in (here.parents[2], Path.cwd(), *Path.cwd().parents):
+    for candidate in (here.parent, here.parents[1], here.parents[2], Path.cwd(), *Path.cwd().parents):
         if (candidate / "catalogs" / "repos.json").is_file():
             return candidate
-    return here.parents[2]
+    return here.parents[1]
 
 
 def catalogs_dir() -> Path:

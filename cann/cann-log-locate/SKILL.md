@@ -10,7 +10,7 @@ description: >
 # 日志对源码（底座）
 
 ```text
-# PYTHONPATH 指向本领域 tool/ ，见 ../README.md
+# PYTHONPATH 指向 cann-prof-pipeline/scripts/（与 pipeline 一起安装）
 python -m cann_analyze locate --line "<raw>"
 python -m cann_analyze locate <logfile>
 python -m cann_analyze status
