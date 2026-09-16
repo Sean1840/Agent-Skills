@@ -38,6 +38,10 @@ npx skills update
 
 npx 拷贝每个 skill 自己的目录（`SKILL.md` + `scripts/` + `references/`）。cann 的共享文档和 `cann_analyze` 已放进 **`cann-prof-pipeline/references/` 与 `scripts/`**，装 pipeline 就会带上。其它 cann skill 通过 `../cann-prof-pipeline/references/...` 引用，所以 **cann 技能请一起装**（`--all` 或至少带上 `cann-prof-pipeline`）。Grok 也可以继续用 `~/.grok/config.toml` 的 `[skills].paths` 直接扫本仓。
 
+### 本地配置（token / clone 路径）
+
+机器相关项写在 `~/.agent-skills/config.json`，**第一次缺了必须问用户再写入**，不要猜盘符。GitCode token、检视 clone 根目录见 `gitcode-review/references/local-config.md`。
+
 ### 备选：仓内 install.py
 
 需要 Python 3.9+。在本仓根目录：

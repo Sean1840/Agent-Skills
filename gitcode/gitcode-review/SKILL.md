@@ -11,22 +11,19 @@ description: >
 
 对 GitCode PR 做代码检视：先把 patch 落到本地仓、对照周边代码和全流程分析，再把意见挂到**改动文件的具体行**。禁止只盯 diff 文本下结论。
 
-## 认证
+## 认证与本地路径
 
-环境变量 `GITCODE_API_TOKEN`（GitCode 个人访问令牌）。
+机器相关配置见 [local-config.md](references/local-config.md)。**缺 token 或 clone 路径时先问用户，写入 `~/.agent-skills/config.json` 后再继续。禁止默认 `E:\Code\review`。**
 
-- 没有 token：只在本地列出「文件 + 新文件行号 + 正文」，让用户自己去页面点行评论。
-- 有 token：检视完成后，用户要求发到 GitCode 时再调用脚本发帖。
-- 不要把 token 写进仓库或回显到聊天。
-
-创建入口：GitCode 头像 → 个人设置 → 访问令牌。
+- GitCode token：环境变量 `GITCODE_API_TOKEN` 或配置里的 `gitcode.api_token`。没有则只在本地列出「文件 + 新文件行号 + 正文」。有 token 且用户要求发到 GitCode 时再调脚本发帖。不要回显 token。
+- 创建入口：GitCode 头像 → 个人设置 → 访问令牌。
 
 ## 工作流
 
 1. 解析 PR URL 或 `owner/repo#number`（例：`https://gitcode.com/Ascend/msprof/pull/507` → owner=`Ascend` repo=`msprof` number=`507`）。
 2. `GET /api/v5/repos/{owner}/{repo}/pulls/{number}` 取 `head.sha`、`head.ref`、`head.repo`、`base.sha`、`base.ref`、标题。
 3. `GET /api/v5/repos/{owner}/{repo}/pulls/{number}/files?per_page=100` 得到**本 PR 改动文件清单**。`patch` 可能是 `{diff, new_path, ...}`。清单只用来限定审查范围，**不能当作审查材料本身**。
-4. **把 patch 落到 `E:\Code\review\msprof` 再分析**（见下一节）。该目录是检视专用仓，不要用 `E:\Code\msprof`（开发仓）。fetch 失败时先说明缺口，不要用网页 diff 硬审完全程。
+4. **把 patch 落到配置里的检视 clone 再分析**（见下一节）。那是检视专用仓，可随意 fetch/checkout。不要动用户的开发仓。路径未配置时停下来问。fetch 失败时先说明缺口，不要用网页 diff 硬审完全程。
 5. 对照周边代码和调用链确认问题后，再写意见。每条必须落到 **HEAD 新文件行号**（该行须出现在 diff 的 `+` 或上下文行上）。
 6. 发帖用 `scripts/post_inline_comment.py`；发完立刻 `GET .../comments` 核对 `comment_type=diff_comment` 且 `diff_position.start_new_line` 等于传入行号。对不上就停，不要继续刷普通评论。
 7. 若从未在当前环境验证过行内接口，先在一个小 PR 上发一条带标记的探测评论，确认 Files 页钉在目标行后，再发正式意见。
@@ -37,18 +34,18 @@ description: >
 
 ### 落到本地
 
-msprof 检视**只**在 `E:\Code\review\msprof` 进行（专门拉 PR 代码，可随意 fetch/checkout）。不要动 `E:\Code\msprof`。
-
-目录不存在或不是 git 仓时，先克隆：
-
-```
-git clone git@gitcode.com:Ascend/msprof.git E:\Code\review\msprof
-```
-
-拉 PR 并检出 head（本仓专用于 review，允许 checkout）：
+1. `python scripts/local_config.py show`。若没有 `gitcode.clones["{owner}/{repo}"]` 也没有 `gitcode.review_root`：**停问用户**「这份 PR 代码 clone 到哪」。可建议 `~/review/{repo}`，用户确认后再 `set-clone`。不要自己挑盘符。
+2. 检视只在该 clone 进行（可随意 fetch/checkout）。用户的开发仓路径也要用户指认，不要猜、不要 checkout 开发仓。
+3. 目录不存在或不是 git 仓时，用**已确认**的路径克隆：
 
 ```
-cd E:\Code\review\msprof
+git clone git@gitcode.com:{owner}/{repo}.git <confirmed-clone>
+```
+
+拉 PR 并检出 head：
+
+```
+cd <confirmed-clone>
 git fetch origin <base.ref>
 git fetch <head-repo-url> <head.ref>
 git checkout --detach <head.sha>
@@ -57,7 +54,7 @@ git diff <base.sha> <head.sha> -- <changed files>
 
 读全文用工作区文件或 `git show <head.sha>:<path>`。合入前版本：`git show <base.sha>:<path>`。
 
-禁止：用 `E:\Code\msprof` 上过期的 `master` 去 diff 整个源分支。范围始终是 files API 那份清单。
+禁止：用未经确认的路径 clone；禁止用开发仓过期 `master` 去 diff 整个源分支。范围始终是 files API 那份清单。
 
 ### 对照仓内代码
 

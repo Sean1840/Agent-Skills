@@ -17,23 +17,23 @@ description: >
 
 不要做成开 PR 行内检视（那是 `gitcode-review`）。GitHub / GitLab 仓不要走本 skill。
 
-## 输入（缺省就用默认，不要反复问仓链接）
+## 输入（仓名/时间窗可缺省；路径和 token 不能猜）
 
 | 项 | 默认 | 说明 |
 |---|---|---|
-| 仓 | `Ascend/msprof` | GitCode `owner/repo`。本地只在 `E:\Code\review\msprof` 拉代码，不要动 `E:\Code\msprof` |
+| 仓 | `Ascend/msprof` | GitCode `owner/repo`。本地 clone 必须来自配置，见 [local-config.md](references/local-config.md) |
 | 基准分支 | `master` | 合入统计以该分支为准 |
 | 时间范围 | **最近 7 天** | 按 **合入 master 的时间**（`merged_at`），不是创建 PR 的时间。用户说近 N 天/周/月就按那个窗口 |
 | PR 范围 | **全部合入** | 可收窄：作者、标题关键词、**路径前缀**（如只要 `profiler/`、`src/profiler/`） |
 | 对照分支 | 无 | 仅当用户点名（如某商发 / release）才 fetch 并算「master 合入后过了几天」。未点名不要自行寻找版本分支 |
 
-用户说「回顾上周 msprof」或「总结 xx 仓，近一周的 pr 合入」这类话时：仓从话里取（未说则 msprof）、一周、全部 PR，直接开跑。指定了路径前缀时只分析 diff 命中这些路径的 PR；同 PR 改了范围外文件，在「描述 vs 代码」里一句带过，不展开。非 msprof 仓落到 `E:\Code\review\{repo}`，不要动用户开发仓。
+用户说「回顾上周 msprof」或「总结 xx 仓，近一周的 pr 合入」这类话时：仓从话里取（未说则 msprof）、一周、全部 PR。**clone 路径若配置里没有，先问再跑**，不要默认 `E:\Code\review\{repo}`。指定了路径前缀时只分析 diff 命中这些路径的 PR。
 
-认证：`GITCODE_API_TOKEN`。没有 token 时用 git log 凑合列 commit，并写明「PR 元数据不全」。
+认证：`GITCODE_API_TOKEN` 或配置 `gitcode.api_token`。没有 token 时用 git log 凑合列 commit，并写明「PR 元数据不全」。
 
 ## 工作流
 
-1. `cd E:\Code\review\msprof && git fetch origin master`。用户点名了对照分支才再 fetch 那些分支。检出 `origin/master`。目录不是 git 仓则先 `git clone git@gitcode.com:Ascend/msprof.git E:\Code\review\msprof`。
+1. 读 `scripts/local_config.py show`。没有 `gitcode.review_root` / 该仓 clone：**停问用户**路径（可建议 `~/review/{repo}`），确认后 `set-clone`。然后 `cd <clone> && git fetch origin master`。用户点名了对照分支才再 fetch 那些分支。检出 `origin/master`。目录不是 git 仓则 clone 到**已确认**路径。不要动用户开发仓。
 2. 列出窗口内合入 master 的 PR（脚本优先，见下）。用户指定了路径前缀时：用 `git log origin/master --since -- <paths>` 和/或 files API，**只保留 diff 命中这些前缀的 PR**；未改这些路径的合入不进修改点。过滤 docs-only / 纯 CI 可在文档里单列「非业务」，不要混进业务修改点。
 3. **描述检查 → 代码核对**（每笔 PR 必须两步都做，以代码为准）：
    1. 读标题和描述，记下它**声称**改了什么。
@@ -44,7 +44,7 @@ description: >
    - 且这些交集文件上，改动的方法/逻辑有相关性（同一函数、同一条数据流、或修同一缺陷的前后迭代）。
    只共享文件但改的是不相干函数，或主题像、同日合入、同一作者、同属一波 C 化但文件无交集，都单列。修复型 PR 沿同一文件+同一方法往前追引入点；引入 PR 的编号和合入日期写在**本条修改点里**（窗外也一样），不要另开「窗口外根因」附录。
 5. **合入分支**：只写该 PR 的 `base`（实际合入了哪些）。用户点名对照分支时，再对代表 commit 做 `git merge-base --is-ancestor`，用对照分支上**首次包含该 sha 的提交日期**写时差。未点名则停，不要 `git branch -r --contains` 去扫 `26.*`、`release*`、`shop*` 等。
-6. 写成一篇 md，交给用户。默认路径：`E:\Code\review\msprof-合入回顾-<from>_to_<to>.md`。不要往业务仓里提交这篇文档。
+6. 写成一篇 md，交给用户。输出目录用 `gitcode.summary_output_dir`（没有则 `gitcode.review_root`）；文件名 `{repo}-合入回顾-<from>_to_<to>.md`。这两处都没有则先问。不要往业务仓里提交这篇文档。
 
 ## 拉 PR 列表
 
@@ -124,6 +124,6 @@ git log origin/master --since='7 days ago' --pretty=format:'%H %cI %s'
 ## 约束
 
 - 分析基准永远是 **当时已在 master 上的树**（当前 `origin/master` 即可，因窗口内 PR 已合入）。
-- 不要 checkout 到用户开发仓 `E:\Code\msprof`。
+- 不要 checkout 用户开发仓。开发仓路径只能用户指认。
 - 不要把回顾 md 提交进业务仓。
 - 不要用开 PR 的行内评论接口发这些结论。

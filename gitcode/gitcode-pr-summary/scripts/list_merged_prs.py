@@ -14,6 +14,12 @@ from datetime import datetime, timedelta, timezone
 
 API_ROOT = "https://api.gitcode.com/api/v5"
 
+try:
+    from local_config import get_token
+except ImportError:
+    def get_token():
+        return os.environ.get("GITCODE_API_TOKEN")
+
 
 def request(url: str, token: str):
     headers = {
@@ -54,9 +60,13 @@ def main() -> int:
     parser.add_argument("--state", default="merged", help="merged or closed")
     args = parser.parse_args()
 
-    token = os.environ.get("GITCODE_API_TOKEN")
+    token = get_token()
     if not token:
-        print("GITCODE_API_TOKEN is required", file=sys.stderr)
+        print(
+            "GitCode token missing. Ask the user for GITCODE_API_TOKEN, then: "
+            "python scripts/local_config.py set gitcode.api_token <token>",
+            file=sys.stderr,
+        )
         return 1
 
     now = datetime.now(timezone.utc)

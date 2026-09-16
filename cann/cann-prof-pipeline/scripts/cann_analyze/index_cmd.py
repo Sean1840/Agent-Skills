@@ -77,8 +77,9 @@ def index_repo(
     root = Path(source) if source else resolve_source(repo)
     if root is None or not root.exists():
         raise FileNotFoundError(
-            f"no local clone for {repo_id}. Pass --source, or set catalogs/repos.local.json "
-            "(see repos.local.json.example). locate never clones."
+            f"no local clone for {repo_id}. Ask the user for the path, then pass --source "
+            "or set cann.repo_paths in ~/.agent-skills/config.json "
+            "(or catalogs/repos.local.json). locate never clones."
         )
     git_commit = commit or head_commit(root) or "unknown"
     ref = head_ref(root) or ""
