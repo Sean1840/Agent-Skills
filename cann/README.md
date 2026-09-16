@@ -31,4 +31,4 @@ python -m cann_analyze status
 
 或：`set CANN_ANALYZE_HOME=E:\Code\Agent-Skills\cann\tool` 后任意目录执行 `python -m cann_analyze`（`PYTHONPATH` 仍需包含 `tool/`）。
 
-安装 skill：在 Agent-Skills 根目录 `python install.py`（Grok 已用 `config.toml` 的 paths 扫本仓）。
+安装 skill：推荐 `npx skills add Sean1840/Agent-Skills -g -y --all`（见仓根 [README](../README.md)）。npx 只装各 skill 目录；`tool/` 和 `docs/` 仍要 clone 本仓或跑 `python install.py`（会带 sidecar）。Grok 可用 `config.toml` 的 paths 扫本仓。

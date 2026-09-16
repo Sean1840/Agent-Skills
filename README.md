@@ -6,6 +6,40 @@
 
 ## 安装
 
+推荐用 [skills CLI](https://skills.sh/)（`npx skills`），和 [Ascend-Interface-Auditor](https://github.com/kali20gakki/Ascend-Interface-Auditor) 同一套。先确认仓能被识别：
+
+```bash
+npx skills add Sean1840/Agent-Skills --list
+```
+
+能列出 8 个 skill（`gitcode-review`、`gitcode-pr-summary`、`cann-prof-pipeline` 等）就可以装。
+
+### 推荐：npx
+
+```bash
+# 全部 skill，装到本机已探测到的 Agent（用户级）
+npx skills add Sean1840/Agent-Skills -g -y --all
+
+# 指定 Agent（grok / claude-code / codex / cursor / opencode …）
+npx skills add Sean1840/Agent-Skills -g -y -a grok
+npx skills add Sean1840/Agent-Skills -g -y -a claude-code
+npx skills add Sean1840/Agent-Skills -g -y -a codex
+
+# 只装某一个
+npx skills add Sean1840/Agent-Skills --skill gitcode-review -a grok -g -y
+npx skills add Sean1840/Agent-Skills --skill cann-prof-pipeline -a claude-code -g -y
+
+# 更新已安装的
+npx skills check
+npx skills update
+```
+
+`-g` 用户级；不加则装到当前项目（`.claude/skills/`、`.agents/skills/` 等）。多个 `--skill` 要分开写，不要逗号拼在一个参数里。
+
+npx 只拷贝每个 skill 自己的目录（`SKILL.md` + `scripts/` + `references/`）。`cann/` 下的共享文档和 `tool/` 分析脚本**不会**随 npx 进去。需要完整 cann 分析链（`analysis-chain.md`、`docs/`、`python -m cann_analyze`）时：clone 本仓，或用下面的 `install.py`（会带 sidecar）。Grok 也可以继续用 `~/.grok/config.toml` 的 `[skills].paths` 直接扫本仓。
+
+### 备选：仓内 install.py
+
 需要 Python 3.9+。在本仓根目录：
 
 ```bash

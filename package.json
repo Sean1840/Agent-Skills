@@ -1,0 +1,26 @@
+{
+  "name": "agent-skills",
+  "version": "1.0.0",
+  "description": "Cross-agent skills: GitCode PR review/summary and CANN/msprof profiling analysis",
+  "keywords": [
+    "skills",
+    "gitcode",
+    "cann",
+    "msprof",
+    "profiling",
+    "claude",
+    "codex",
+    "grok"
+  ],
+  "homepage": "https://github.com/Sean1840/Agent-Skills",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Sean1840/Agent-Skills.git"
+  },
+  "files": [
+    "README.md",
+    "install.py",
+    "gitcode/",
+    "cann/"
+  ]
+}
