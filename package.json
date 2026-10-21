@@ -1,10 +1,11 @@
 {
   "name": "agent-skills",
   "version": "1.0.0",
-  "description": "Cross-agent skills: GitCode PR review and merged-PR retrospectives",
+  "description": "Cross-agent skills: GitCode PR review, merged-PR retrospectives, and codebase slop audit",
   "keywords": [
     "skills",
     "gitcode",
+    "audit",
     "claude",
     "codex",
     "grok"
@@ -17,6 +18,7 @@
   "files": [
     "README.md",
     "install.py",
-    "gitcode/"
+    "gitcode/",
+    "audit/"
   ]
 }

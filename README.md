@@ -1,6 +1,6 @@
 # Agent-Skills
 
-给编码 Agent 用的 GitCode 工作流技能：开 PR 行内检视、已合入 PR 的合入回顾。每个 skill 一个目录，内含 `SKILL.md`，可选 `scripts/`、`references/`。
+给编码 Agent 用的工作流技能：GitCode 开 PR 行内检视、已合入 PR 的合入回顾，以及全库冗余清理。每个 skill 一个目录，内含 `SKILL.md`，可选 `scripts/`、`references/`。
 
 安装时只把带 `SKILL.md` 的那一层拷到各 Agent 的 skills 目录（扁平，名字全局唯一）。
 
@@ -10,8 +10,9 @@
 |---|---|---|
 | `gitcode-review` | 把 GitCode PR 的 patch 落到本地仓，对照周边代码和调用链检视，把意见钉到 Files 页具体行 | 「检视这个 PR」「给 GitCode 提行内意见」`/gitcode-review` |
 | `gitcode-pr-summary` | 按合入时间窗口总结已进 master 的改动：diff 实际改了什么、做法、风险、相关 PR | 「总结近一周合入」「master 这周改了什么」`/gitcode-pr-summary` |
+| `codebase-slop-audit` | 分块通读调用链，查找无用测试、多余包装、死代码和重复抽象，编排者亲自复核后给排序计划 | 「全库清理」「无用测试」「冗余抽象」`/codebase-slop-audit` |
 
-二者都只对 GitCode。GitHub / GitLab PR 不要走这两条。
+前两个只对 GitCode。GitHub / GitLab PR 不要走这两条。`codebase-slop-audit` 不绑托管平台。
 
 ### gitcode-review
 
@@ -31,12 +32,22 @@
 
 clone 路径、回顾 md 输出目录同样走本地配置。没有则先问。
 
+### codebase-slop-audit
+
+1. 父会话只编排。蜂群是新会话，模型和正在执行本 skill 的会话相同，推理强度用该模型的最高档。
+2. 先把仓库分成能通读的小块。每块先查找，再换一个新会话做对抗复查。查找和复查只列目录、通读文件，不靠内容搜索或符号索引下结论。
+3. 编排者自己读幸存目标，给出排序后的清理计划。没有发现也算做完。这一步不改仓库。
+4. 用户要求清理时，新会话按计划修改，另一个新会话重读并跑相关测试。剩下的问题由父会话自己收。
+
+细则见 [codebase-slop-audit/SKILL.md](audit/codebase-slop-audit/SKILL.md)。
+
 ## 安装
 
 ```bash
 npx skills add Sean1840/Agent-Skills --list
 npx skills add Sean1840/Agent-Skills -g -y --all
 npx skills add Sean1840/Agent-Skills --skill gitcode-review -a grok -g -y
+npx skills add Sean1840/Agent-Skills --skill codebase-slop-audit -a grok -g -y
 npx skills check
 npx skills update
 ```
@@ -79,10 +90,11 @@ Token 不要回显、不要提交进 git。
 ## 目录
 
 ```text
-gitcode/gitcode-review/       开 PR 行内检视
-gitcode/gitcode-pr-summary/   已合入 PR 回顾
-wip/                          草稿，不安装
-install.py                    跨 Agent 安装
+gitcode/gitcode-review/              开 PR 行内检视
+gitcode/gitcode-pr-summary/          已合入 PR 回顾
+audit/codebase-slop-audit/           全库冗余清理
+wip/                                 草稿，不安装
+install.py                           跨 Agent 安装
 ```
 
 每个 skill：
